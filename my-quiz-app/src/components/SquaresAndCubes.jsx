@@ -26,7 +26,7 @@ const SquaresAndCubes = ({ onComplete }) => {
 
   const generateQuestion = () => {
     const types = ["square", "cube"];
-    const num = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 20
+    const num = Math.floor(Math.random() * 30) + 1; // Random number between 1 and 30
     const randomType = types[Math.floor(Math.random() * types.length)];
 
     setQuestion(

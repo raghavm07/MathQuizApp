@@ -26,7 +26,7 @@ const SquareCubeRoot = ({ onComplete }) => {
 
   const generateQuestion = () => {
     const types = ["squareRoot", "cubeRoot"];
-    const num = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+    const num = Math.floor(Math.random() * 30) + 1; // Random number between 1 and 20
     const randomType = types[Math.floor(Math.random() * types.length)];
 
     setQuestion(
