@@ -160,7 +160,7 @@ const App = () => {
         as="footer"
         bg="gray.800"
         color="white"
-        p={4}
+        p={6}
         textAlign="center"
         position="fixed" // Make the footer fixed
         bottom={0} // Position it at the bottom
