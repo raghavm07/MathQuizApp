@@ -1,7 +1,5 @@
-// src/components/FractionQuiz.js
-
-import { useState, useEffect, useRef } from "react"; // Import useRef
-import { Box, Button, Text, Input } from "@chakra-ui/react";
+import { useState, useEffect, useRef } from "react";
+import { Box, Button, Text, Input, Progress } from "@chakra-ui/react";
 
 const fractions = [
   { fraction: "1/2", percentage: 50 },
@@ -44,70 +42,120 @@ const FractionQuiz = ({ onComplete }) => {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [userAnswer, setUserAnswer] = useState("");
   const [message, setMessage] = useState("");
-
-  // Create a ref for the input
-  const inputRef = useRef(null);
+  const [timer, setTimer] = useState(10); // 10 seconds timer
+  const [isActive, setIsActive] = useState(true);
+  const inputRef = useRef(null); // Ref for input field
 
   useEffect(() => {
     generateQuestion();
   }, []);
 
-  // Focus the input field and select the text when a new question is generated
+  useEffect(() => {
+    if (timer > 0 && isActive) {
+      const interval = setInterval(() => {
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0)); // Timer decrement logic
+      }, 1000);
+
+      return () => clearInterval(interval); // Clean up timer on unmount
+    } else if (timer === 0) {
+      handleTimeUp(); // Handle time up when timer hits 0
+    }
+  }, [timer, isActive]);
+
+  // Focus the input when a new question is generated
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus(); // Set focus on input
-      inputRef.current.select(); // Select the current input value
+      inputRef.current.focus();
+      inputRef.current.select();
     }
   }, [question]);
 
   const generateQuestion = () => {
-    // Select a random fraction from the predefined list
     const randomIndex = Math.floor(Math.random() * fractions.length);
     const { fraction, percentage } = fractions[randomIndex];
 
     setQuestion(`What is ${fraction} as a decimal?`);
-    setCorrectAnswer(percentage.toFixed(2)); // Store the percentage as the correct answer
+    setCorrectAnswer(percentage.toFixed(2));
+    setUserAnswer("");
+    setMessage("");
+    setTimer(10); // Reset the timer for each new question
+    setIsActive(true);
+  };
+
+  const handleTimeUp = () => {
+    setMessage(`Time's up! The correct answer was: ${correctAnswer}.`);
+    setUserAnswer("");
+    setIsActive(false);
+
+    setTimeout(() => {
+      generateQuestion();
+      onComplete(); // Move to the next quiz after a delay
+    }, 3000);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userAnswer.trim() === "") {
       setMessage("Please enter your answer!");
-      return; // Exit early if no answer
+      return;
     }
+
     if (parseFloat(userAnswer).toFixed(2) === correctAnswer) {
       setMessage("Correct!");
     } else {
       setMessage(`Wrong! The correct answer was: ${correctAnswer}.`);
     }
 
-    setUserAnswer("");
+    setIsActive(false); // Stop the timer once the answer is submitted
     setTimeout(() => {
-      setMessage("");
       generateQuestion();
-      onComplete(); // Change quiz type after submission
-    }, 2000);
+      onComplete(); // Move to the next quiz after submission
+    }, 3000);
   };
 
   return (
-    <Box p={4}>
-      <Text fontSize="2xl" mb={4}>
+    <Box
+      p={4}
+      //   p={6}
+      //   maxW="500px"
+      //   mx="auto"
+      //   borderWidth="1px"
+      //   borderRadius="lg"
+      //   boxShadow="lg"
+    >
+      <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={4}>
         {question}
       </Text>
+
+      <Progress
+        value={(timer / 10) * 100}
+        size="sm"
+        colorScheme="teal"
+        mb={4}
+      />
+
       <form onSubmit={handleSubmit}>
         <Input
-          ref={inputRef} // Attach the ref to the input
+          ref={inputRef} // Attach ref to input
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
           placeholder="Enter your answer"
+          size="lg"
+          focusBorderColor="teal.400"
           mb={4}
         />
-        <Button type="submit" colorScheme="teal">
+        <Button type="submit" colorScheme="teal" size="lg" width="full">
           Submit
         </Button>
       </form>
+
       {message && (
-        <Text mt={4} fontSize="xl">
+        <Text
+          mt={4}
+          fontSize="xl"
+          textAlign="center"
+          color={message.includes("Correct") ? "green.500" : "red.500"}
+        >
           {message}
         </Text>
       )}
