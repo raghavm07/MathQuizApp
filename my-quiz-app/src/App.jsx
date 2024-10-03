@@ -85,7 +85,7 @@ const App = () => {
 
   return (
     <>
-      <Box className="App" p={5} maxW="4xl" mx="auto">
+      <Box className="App" p={5} maxW="4xl" mx="auto" mb={5}>
         <Heading as="h1" size="xl" mb={6} textAlign="center">
           Math Quiz App
         </Heading>
