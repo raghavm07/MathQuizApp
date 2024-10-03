@@ -60,7 +60,10 @@ const FractionQuiz = ({ onComplete }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (userAnswer.trim() === "") {
+      setMessage("Please enter your answer!");
+      return; // Exit early if no answer
+    }
     if (parseFloat(userAnswer).toFixed(2) === correctAnswer) {
       setMessage("Correct!");
     } else {

@@ -29,8 +29,10 @@ const PrimeQuiz = ({ onComplete }) => {
 
   const handleAnswer = (e) => {
     e.preventDefault();
-    //  if (userAnswer === "") return;
-
+    if (userAnswer.trim() === "") {
+      setFeedback("Please enter your answer!");
+      return; // Exit early if no answer
+    }
     // Check if the user's answer is correct
     const normalizedAnswer = userAnswer.trim().toLowerCase();
     if (normalizedAnswer === correctAnswer) {

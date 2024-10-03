@@ -31,9 +31,10 @@ const SquaresAndCubes = ({ onComplete }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // if (userAnswer.trim() === "") return;
-
+    if (userAnswer.trim() === "") {
+      setMessage("Please enter your answer!");
+      return; // Exit early if no answer
+    }
     if (userAnswer === correctAnswer) {
       setMessage("Correct!");
     } else {
