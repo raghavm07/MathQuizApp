@@ -11,11 +11,12 @@ import {
   Stack,
   Icon,
 } from "@chakra-ui/react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 import PrimeQuiz from "./components/PrimeNumberQuiz";
 import SquareCubeRoot from "./components/SquareCubeRoot";
 import SquaresAndCubes from "./components/SquaresAndCubes";
 import FractionQuiz from "./components/FractionQuiz";
+import TablesQuiz from "./components/TablesQuiz";
 
 const App = () => {
   const [quizType, setQuizType] = useState("");
@@ -26,6 +27,7 @@ const App = () => {
     "squaresAndCubes",
     "fractions",
     "squareAndCubeRoots",
+    "tables",
   ];
 
   const handleQuizSelection = (type) => {
@@ -66,6 +68,10 @@ const App = () => {
       case "squareAndCubeRoots":
         return (
           <SquareCubeRoot onComplete={isRandom ? selectRandomQuiz : () => {}} />
+        );
+      case "tables":
+        return (
+          <TablesQuiz onComplete={isRandom ? selectRandomQuiz : () => {}} />
         );
       default:
         return null;
@@ -116,6 +122,16 @@ const App = () => {
           >
             Square and Cube Roots
           </Button>
+
+          <Button
+            variant={quizType === "tables" ? "solid" : "outline"}
+            colorScheme="red"
+            onClick={() => handleQuizSelection("tables")}
+            isDisabled={isRandom}
+          >
+            Tables
+          </Button>
+
           <Button
             colorScheme="orange"
             variant={isRandom ? "solid" : "outline"} // Change the variant based on isRandom
