@@ -36,7 +36,7 @@ const PrimeQuiz = ({ onComplete }) => {
     if (normalizedAnswer === correctAnswer) {
       setFeedback("Correct!");
     } else {
-      setFeedback(`Wrong! The correct answer is "${correctAnswer}".`);
+      setFeedback(`Wrong! It is a prime number.`);
     }
 
     // Clear the input
