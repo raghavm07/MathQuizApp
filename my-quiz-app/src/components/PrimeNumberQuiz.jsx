@@ -1,6 +1,6 @@
 // src/components/PrimeNumberQuiz.js
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Import useRef
 import { Box, Button, Text, Input } from "@chakra-ui/react";
 
 // List of prime numbers to choose from
@@ -15,9 +15,20 @@ const PrimeQuiz = ({ onComplete }) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
 
+  // Create a ref for the input
+  const inputRef = useRef(null);
+
   useEffect(() => {
     askPrimeQuestion();
   }, []);
+
+  // Focus the input field and select the text when a new question is generated
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus(); // Set focus on input
+      inputRef.current.select(); // Select the current input value
+    }
+  }, [question]);
 
   const askPrimeQuestion = () => {
     const num = primes[Math.floor(Math.random() * primes.length)];
@@ -33,6 +44,7 @@ const PrimeQuiz = ({ onComplete }) => {
       setFeedback("Please enter your answer!");
       return; // Exit early if no answer
     }
+
     // Check if the user's answer is correct
     const normalizedAnswer = userAnswer.trim().toLowerCase();
     if (normalizedAnswer === correctAnswer) {
@@ -58,6 +70,7 @@ const PrimeQuiz = ({ onComplete }) => {
       </Text>
       <form onSubmit={handleAnswer}>
         <Input
+          ref={inputRef} // Attach the ref to the input
           type="text"
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}

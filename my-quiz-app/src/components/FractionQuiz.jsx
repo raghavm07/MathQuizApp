@@ -1,6 +1,6 @@
 // src/components/FractionQuiz.js
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Import useRef
 import { Box, Button, Text, Input } from "@chakra-ui/react";
 
 const fractions = [
@@ -45,9 +45,20 @@ const FractionQuiz = ({ onComplete }) => {
   const [userAnswer, setUserAnswer] = useState("");
   const [message, setMessage] = useState("");
 
+  // Create a ref for the input
+  const inputRef = useRef(null);
+
   useEffect(() => {
     generateQuestion();
   }, []);
+
+  // Focus the input field and select the text when a new question is generated
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus(); // Set focus on input
+      inputRef.current.select(); // Select the current input value
+    }
+  }, [question]);
 
   const generateQuestion = () => {
     // Select a random fraction from the predefined list
@@ -85,6 +96,7 @@ const FractionQuiz = ({ onComplete }) => {
       </Text>
       <form onSubmit={handleSubmit}>
         <Input
+          ref={inputRef} // Attach the ref to the input
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
           placeholder="Enter your answer"
