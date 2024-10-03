@@ -74,7 +74,7 @@ const FractionQuiz = ({ onComplete }) => {
     const randomIndex = Math.floor(Math.random() * fractions.length);
     const { fraction, percentage } = fractions[randomIndex];
 
-    setQuestion(`What is ${fraction} as a decimal?`);
+    setQuestion(`What is ${fraction} as a percentage?`);
     setCorrectAnswer(percentage.toFixed(2));
     setUserAnswer("");
     setMessage("");
