@@ -17,6 +17,7 @@ import SquareCubeRoot from "./components/SquareCubeRoot";
 import SquaresAndCubes from "./components/SquaresAndCubes";
 import FractionQuiz from "./components/FractionQuiz";
 import TablesQuiz from "./components/TablesQuiz";
+import ToneQuiz from "./components/ToneQuiz";
 
 const App = () => {
   const [quizType, setQuizType] = useState("");
@@ -28,6 +29,7 @@ const App = () => {
     "fractions",
     "squareAndCubeRoots",
     "tables",
+    "tone",
   ];
 
   const handleQuizSelection = (type) => {
@@ -73,6 +75,8 @@ const App = () => {
         return (
           <TablesQuiz onComplete={isRandom ? selectRandomQuiz : () => {}} />
         );
+      case "tone": // Add case for tone quiz
+        return <ToneQuiz onComplete={isRandom ? selectRandomQuiz : () => {}} />;
       default:
         return null;
     }
@@ -87,7 +91,7 @@ const App = () => {
     <>
       <Box className="App" p={5} maxW="4xl" mx="auto" mb={40}>
         <Heading as="h1" size="xl" mb={6} textAlign="center">
-          Math Quiz App
+          Quiz
         </Heading>
         <HStack spacing={4} mb={4} wrap="wrap" justify="center">
           <Button
@@ -130,6 +134,15 @@ const App = () => {
             isDisabled={isRandom}
           >
             Tables
+          </Button>
+
+          <Button
+            variant={quizType === "tone" ? "solid" : "outline"} // Add button for tone quiz
+            colorScheme="orange"
+            onClick={() => handleQuizSelection("tone")}
+            isDisabled={isRandom} // Disable if in random mode
+          >
+            Tone Quiz
           </Button>
 
           <Button
